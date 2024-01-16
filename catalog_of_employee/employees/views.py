@@ -1,12 +1,12 @@
+from django.views import View
+from .models import Employee
 from django.shortcuts import render
 
-# Create your views here.
 
+class Index(View):
+    template_name = "index2.html"
 
-
-
-from django.http import HttpResponse
-
-
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index EMPLOYEE.")
+    def get(self, request, *args, **kwargs):
+        employees = Employee.objects.all()
+        return render(request, self.template_name,
+                      {"employees": employees})
