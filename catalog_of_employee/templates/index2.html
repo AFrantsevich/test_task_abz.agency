@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru">
+{% load mptt_tags %}
+<ul>
+    {% recursetree employees %}
+        <li>
+            {{ node.position.bio.last_name }} {{ node.position.bio.last_name }} - {{ node.position.position_name }}
+            {% if not node.is_leaf_node %}
+
+            {{ children }}
+
+            {% endif %}
+        </li>
+    {% endrecursetree %}
+</ul>
+
