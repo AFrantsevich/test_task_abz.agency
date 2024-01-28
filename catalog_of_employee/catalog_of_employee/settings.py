@@ -32,6 +32,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'employees',
     'mptt',
+    'django_tables2',
+    'django_filters',
+    'django_htmx',
     'django_seed'
 ]
 
@@ -42,6 +45,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django_htmx.middleware.HtmxMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -63,6 +67,18 @@ TEMPLATES = [
         },
     },
 ]
+
+
+DJANGO_TABLES2_TABLE_ATTRS = {
+    'class': 'table table-bordered',
+    'thead': {
+        'class': 'table table-bordered',
+    },
+    'tbody': {
+        'id': 'groups',
+    },
+}
+
 
 WSGI_APPLICATION = 'catalog_of_employee.wsgi.application'
 

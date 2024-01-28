@@ -1,12 +1,21 @@
-from django.views import View
+from django_filters.views import FilterView
+from django_tables2 import SingleTableMixin
+
 from .models import Employee
-from django.shortcuts import render
+from .tables import EmployeeTable
+from .filters import ProductFilter
 
 
-class Index(View):
-    template_name = "index2.html"
+class Index(SingleTableMixin, FilterView):
+    template_name = "base.html"
+    table_class = EmployeeTable
+    queryset = Employee.objects.all()
+    filterset_class = ProductFilter
 
-    def get(self, request, *args, **kwargs):
-        employees = Employee.objects.all()
-        return render(request, self.template_name,
-                      {"employees": employees})
+    def get_template_names(self):
+        if self.request.htmx:
+            template_name = "includes/table.html"
+        else:
+            template_name = "base.html"
+
+        return template_name
