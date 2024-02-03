@@ -2,6 +2,7 @@
 <html lang="ru">
     <head>
         {% load static %}
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport"
@@ -24,6 +25,7 @@
             {% block title %}Тайтл{% endblock %}
         </title>
     </head>
+    {% csrf_token %}
     <body id="page-top">
         <div id="wrapper">
             {% include 'includes/navbar.html' %}
@@ -33,10 +35,49 @@
                     <div class="container-fluid" style="padding-left:10px, padding-right:10px">
                         {% block content %}{% endblock %}
                     </div>
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+                    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
                     <script>
-                        htmx.onLoad(function(content) {
-                        var el = document.getElementById('groups');
-                        var sortable = Sortable.create(el);})
+                        function getCookie(c_name) {
+                           if (document.cookie.length > 0) {
+                              c_start = document.cookie.indexOf(c_name + "=");
+                              if (c_start != -1) {
+                                 c_start = c_start + c_name.length + 1;
+                                 c_end = document.cookie.indexOf(";", c_start);
+                                 if (c_end == -1) c_end = document.cookie.length;
+                                 return unescape(document.cookie.substring(c_start, c_end));
+                              }
+                           }
+                           return "";
+                        }
+
+                        $(function () {
+                           $.ajaxSetup({
+                              headers: {
+                                 "X-CSRFToken": getCookie("csrftoken")
+                              }
+                           });
+                        });
+                        htmx.onLoad(function (content) {
+                           var el = document.getElementById('groups');
+                           var sortable = new Sortable(el, {
+                              dataIdAttr: 'data-id',
+                              store: {
+                                 get: function (sortable) {
+                                    var order = localStorage.getItem(sortable.options.group);
+                                    return order ? order.split('|') : [];
+                                 },
+                                 set: function (sortable) {
+                                    var order = sortable.toArray();
+                                    console.log(order);
+                                 }
+                              },
+
+                              onSort: function (event) {
+                                 var order = sortable.toArray();
+                              }
+                           })
+                        })
                     </script>
                 </div>
                 {% include 'includes/footer.html' %}

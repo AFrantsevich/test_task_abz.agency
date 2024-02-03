@@ -42,13 +42,12 @@ def get_style(**kwargs):
 
 
 TD_ATTRS = {"style": get_style,
-            "hx-get": get_employee_id,
-            "hx-trigger": "click",
-            "hx-target": "div.container-fluid",
-            "hx-swap": "outerHTML",
-            "hx-push-url": "true"
+            # "hx-get": get_employee_id,
+            # "hx-trigger": "click",
+            # "hx-target": "div.container-fluid",
+            # "hx-swap": "outerHTML",
+            # "hx-push-url": "true"
             }
-
 
 class EmployeeTable(tables.Table):
     position__bio__first_name = tables.Column(
@@ -65,3 +64,6 @@ class EmployeeTable(tables.Table):
 
     class Meta:
         template_name = "includes/table.html"
+        row_attrs = {
+            "data-id": lambda record: record.pk
+        }

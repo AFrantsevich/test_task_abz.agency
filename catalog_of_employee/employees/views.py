@@ -34,3 +34,9 @@ class EmployeeView(View):
         employee = Employee.objects.get(id=kwargs.get('id'))
         return render(request, self.template_name,
                               {"employee": employee})
+
+
+# from django.http import HttpResponse
+# def your_view_name(request, *args, **kwargs):
+#     print(request, args, kwargs, request.body)
+#     return HttpResponse("Hello, World!")
